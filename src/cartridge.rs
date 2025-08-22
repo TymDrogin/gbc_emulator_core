@@ -8,25 +8,28 @@ const ROM_HEADER_END_ADDRESS: usize = 0x014F;
 #[repr(C, packed)]
 #[derive(Debug, Clone, Copy)]
 pub struct ROMHeader {
-    pub entry_point: [u8; 4],
-    pub nintendo_logo: [u8; 48],
-    pub title: [u8; 15],              // title (15 bytes, CGB interpretation)
-    pub cgb_flag: u8,                 // 0x143
-    pub new_licensee_code: u16,   // 0x144–0x145
-    pub sgb_flag: u8,                 // 0x146
-    pub cartridge_type: u8,           // 0x147
-    pub rom_size: u8,                 // 0x148
-    pub ram_size: u8,                 // 0x149
-    pub destination_code: u8,         // 0x14A
-    pub old_licensee_code: u8,        // 0x14B
-    pub mask_rom_version_number: u8,  // 0x14C
-    pub header_checksum: u8,          // 0x14D
-    pub global_checksum: u16,     // 0x14E–0x14F
+    entry_point: [u8; 4],
+    nintendo_logo: [u8; 48],
+    title: [u8; 15],              // title (15 bytes, CGB interpretation)
+    cgb_flag: u8,                 // 0x143
+    new_licensee_code: u16,   // 0x144–0x145
+    sgb_flag: u8,                 // 0x146
+    cartridge_type: u8,           // 0x147
+    rom_size: u8,                 // 0x148
+    ram_size: u8,                 // 0x149
+    destination_code: u8,         // 0x14A
+    old_licensee_code: u8,        // 0x14B
+    mask_rom_version_number: u8,  // 0x14C
+    header_checksum: u8,          // 0x14D
+    global_checksum: u16,     // 0x14E–0x14F
 }
 impl ROMHeader {
     pub fn from_bytes(bytes: &[u8]) -> &Self {
         assert!(bytes.len() >= std::mem::size_of::<ROMHeader>());
         unsafe { &*(bytes.as_ptr() as *const ROMHeader) }
+    }
+    pub fn get_entry_point(&self) -> [u8; 4] {
+        self.entry_point
     }
 
     pub fn get_title(&self) -> String {
@@ -123,8 +126,8 @@ impl fmt::Display for ROMHeader {
 }
 
 pub struct Cartridge {
-    pub header: ROMHeader,
-    pub rom_data: Vec<u8>,
+    header: ROMHeader,
+    rom_data: Vec<u8>,
 }
 impl Cartridge {
     pub fn new(rom_data: Vec<u8>) -> Self {
@@ -138,7 +141,12 @@ impl Cartridge {
         
         Ok(Cartridge::new(rom_data))
     }
-
+    pub fn get_header(&self) -> &ROMHeader {
+        &self.header
+    }
+    pub fn get_rom_data(&self) -> &Vec<u8> {
+        &self.rom_data
+    }
     pub fn print_info(&self) {
         println!("{}", self.header);
     }
