@@ -14,7 +14,8 @@ pub struct Opcode {
     pub bytes: u8,                  // Number of bytes the instruction occupies
     pub cycles: Vec<u8>,            // Number of cycles the instruction takes
     pub operands: Vec<Operand>,     // Operands for the instruction
-    pub immediate: bool,            // Does the instruction use immediate values
+    #[serde(rename = "immediate")]
+    pub is_immediate: bool,            // Does the instruction use immediate values
     pub flags: Flags,               // Flags affected by the instruction
 }
 
