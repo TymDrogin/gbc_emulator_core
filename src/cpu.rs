@@ -10,8 +10,6 @@ struct CPU {
 
 
 
-
-
 // A - Accumulator
 // F - Flags
 // B, C, D, E, H, L - General purpose registers
@@ -89,3 +87,7 @@ impl Registers {
         self.l = value as u8;
     }
 }
+
+
+
+struct Instruction(u8);

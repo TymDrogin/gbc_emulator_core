@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+
 pub fn get_cartridge_types() -> HashMap<u8, &'static str> {
     let mut map = HashMap::new();
 
@@ -185,76 +186,6 @@ pub fn old_licensee_codes() -> HashMap<u8, &'static str> {
     map.insert(0xF0, "A Wave");
     map.insert(0xF3, "Extreme Entertainment");
     map.insert(0xFF, "LJN");
-
-    map
-}
-pub fn new_licensee_codes() -> HashMap<&'static str, &'static str> {
-    let mut map = HashMap::new();
-
-    map.insert("00", "None");
-    map.insert("01", "Nintendo Research & Development 1");
-    map.insert("08", "Capcom");
-    map.insert("13", "EA (Electronic Arts)");
-    map.insert("18", "Hudson Soft");
-    map.insert("19", "B-AI");
-    map.insert("20", "KSS");
-    map.insert("22", "Planning Office WADA");
-    map.insert("24", "PCM Complete");
-    map.insert("25", "San-X");
-    map.insert("28", "Kemco");
-    map.insert("29", "SETA Corporation");
-    map.insert("30", "Viacom");
-    map.insert("31", "Nintendo");
-    map.insert("32", "Bandai");
-    map.insert("33", "Ocean Software/Acclaim Entertainment");
-    map.insert("34", "Konami");
-    map.insert("35", "HectorSoft");
-    map.insert("37", "Taito");
-    map.insert("38", "Hudson Soft");
-    map.insert("39", "Banpresto");
-    map.insert("41", "Ubi Soft1");
-    map.insert("42", "Atlus");
-    map.insert("44", "Malibu Interactive");
-    map.insert("46", "Angel");
-    map.insert("47", "Bullet-Proof Software2");
-    map.insert("49", "Irem");
-    map.insert("50", "Absolute");
-    map.insert("51", "Acclaim Entertainment");
-    map.insert("52", "Activision");
-    map.insert("53", "Sammy USA Corporation");
-    map.insert("54", "Konami");
-    map.insert("55", "Hi Tech Expressions");
-    map.insert("56", "LJN");
-    map.insert("57", "Matchbox");
-    map.insert("58", "Mattel");
-    map.insert("59", "Milton Bradley Company");
-    map.insert("60", "Titus Interactive");
-    map.insert("61", "Virgin Games Ltd.3");
-    map.insert("64", "Lucasfilm Games4");
-    map.insert("67", "Ocean Software");
-    map.insert("69", "EA (Electronic Arts)");
-    map.insert("70", "Infogrames5");
-    map.insert("71", "Interplay Entertainment");
-    map.insert("72", "Broderbund");
-    map.insert("73", "Sculptured Software6");
-    map.insert("75", "The Sales Curve Limited7");
-    map.insert("78", "THQ");
-    map.insert("79", "Accolade");
-    map.insert("80", "Misawa Entertainment");
-    map.insert("83", "lozc");
-    map.insert("86", "Tokuma Shoten");
-    map.insert("87", "Tsukuda Original");
-    map.insert("91", "Chunsoft Co.8");
-    map.insert("92", "Video System");
-    map.insert("93", "Ocean Software/Acclaim Entertainment");
-    map.insert("95", "Varie");
-    map.insert("96", "Yonezawa/s’pal");
-    map.insert("97", "Kaneko");
-    map.insert("99", "Pack-In-Video");
-    map.insert("9H", "Bottom Up");
-    map.insert("A4", "Konami (Yu-Gi-Oh!)");
-    map.insert("BL", "MTO");
-    map.insert("DK", "Kodansha remake");
 
     map
 }
