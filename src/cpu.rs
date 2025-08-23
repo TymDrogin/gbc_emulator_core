@@ -48,7 +48,7 @@ impl Registers {
     pub fn get_hl(&self) -> u16 {
         ((self.h as u16) << 8) | (self.l as u16)
     }
-
+    
     pub fn set_af(&mut self, value: u16) {
         self.a = (value >> 8) as u8;
         self.f = (value & 0xF0) as u8; 

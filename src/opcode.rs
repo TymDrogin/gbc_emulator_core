@@ -10,7 +10,7 @@ pub struct Opcode {
     #[serde(skip)]
     pub code: u8,                   // Opcode byte, filled after deserialization
     
-    pub mnemonic: String,           // Mnemonic representation
+    pub mnemonic: Mnemonic,         // Mnemonic representation
     pub bytes: u8,                  // Number of bytes the instruction occupies
     pub cycles: Vec<u8>,            // Number of cycles the instruction takes
     pub operands: Vec<Operand>,     // Operands for the instruction
@@ -32,18 +32,76 @@ pub struct Operand {
     #[serde(rename = "immediate")]
     is_immediate: bool,             // Is the operand an immediate value  
 }
+
 #[allow(unused)]
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct Flags {
-    #[serde(rename = "Z")]
     z: char,                        // Zero Flag
-
-    #[serde(rename = "N")]
     n: char,                        // Subtract Flag
-
-    #[serde(rename = "H")]
     h: char,                        // Half Carry Flag
-
-    #[serde(rename = "C")]
     c: char,                        // Carry Flag
+}
+
+#[allow(non_camel_case_types, unused)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum Mnemonic {
+    Adc,
+    Add,
+    And,
+    Call,
+    Ccf,
+    Cp,
+    Cpl,
+    Daa,
+    Dec,
+    Di,
+    Ei,
+    Halt,
+    Illegal_d3,
+    Illegal_db,
+    Illegal_dd,
+    Illegal_e3,
+    Illegal_e4,
+    Illegal_eb,
+    Illegal_ec,
+    Illegal_ed,
+    Illegal_f4,
+    Illegal_fc,
+    Illegal_fd,
+    Inc,
+    Jp,
+    Jr,
+    Ld,
+    Ldh,
+    Nop,
+    Or,
+    Pop,
+    Prefix,
+    Push,
+    Ret,
+    Reti,
+    Rla,
+    Rlca,
+    Rra,
+    Rrca,
+    Rst,
+    Sbc,
+    Scf,
+    Stop,
+    Sub,
+    Xor,
+    // CB-Prefixed Opcodes
+    Bit,
+    Res,
+    Rl,
+    Rlc,
+    Rr,
+    Rrc,
+    Set,
+    Sla,
+    Sra,
+    Srl,
+    Swap,
 }
