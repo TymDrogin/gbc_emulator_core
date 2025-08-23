@@ -1,4 +1,6 @@
 use crate::cartridge::*;
+use std::collections::HashMap;
+
 
 
 
@@ -18,33 +20,22 @@ struct CPU {
 // AF, BC, DE, HL - Register pairs
 // Flags: Z - Zero, N - Subtract, H - Half Carry, C - Carry
 
-struct Registers {
-    a: u8,   
-    b: u8,    
-    c: u8,    
-    d: u8,    
-    e: u8,    
-    f: u8,    
-    h: u8,   
-    l: u8,
-    sp: u16,
-    pc: u16,
-}
 
 #[allow(unused)]
+struct Registers {
+    pub a: u8,   
+    pub b: u8,    
+    pub c: u8,    
+    pub d: u8,    
+    pub e: u8,    
+    pub f: u8,    
+    pub h: u8,   
+    pub l: u8,
+    pub sp: u16,                    
+    pub pc: u16,                    
+}
+#[allow(unused)]
 impl Registers {
- // --- Getters ---
-    pub fn get_a(&self) -> u8 { self.a }
-    pub fn get_b(&self) -> u8 { self.b }
-    pub fn get_c(&self) -> u8 { self.c }
-    pub fn get_d(&self) -> u8 { self.d }
-    pub fn get_e(&self) -> u8 { self.e }
-    pub fn get_f(&self) -> u8 { self.f }
-    pub fn get_h(&self) -> u8 { self.h }
-    pub fn get_l(&self) -> u8 { self.l }
-    pub fn get_sp(&self) -> u16 { self.sp }
-    pub fn get_pc(&self) -> u16 { self.pc }
-
     pub fn get_af(&self) -> u16 {
         ((self.a as u16) << 8) | (self.f as u16)
     }
@@ -58,21 +49,9 @@ impl Registers {
         ((self.h as u16) << 8) | (self.l as u16)
     }
 
-    // --- Setters ---
-    pub fn set_a(&mut self, value: u8) { self.a = value; }
-    pub fn set_b(&mut self, value: u8) { self.b = value; }
-    pub fn set_c(&mut self, value: u8) { self.c = value; }
-    pub fn set_d(&mut self, value: u8) { self.d = value; }
-    pub fn set_e(&mut self, value: u8) { self.e = value; }
-    pub fn set_f(&mut self, value: u8) { self.f = value; }
-    pub fn set_h(&mut self, value: u8) { self.h = value; }
-    pub fn set_l(&mut self, value: u8) { self.l = value; }
-    pub fn set_sp(&mut self, value: u16) { self.sp = value; }
-    pub fn set_pc(&mut self, value: u16) { self.pc = value; }
-
     pub fn set_af(&mut self, value: u16) {
         self.a = (value >> 8) as u8;
-        self.f = (value & 0xF0) as u8; // lower 4 bits of F are always zero in real HW
+        self.f = (value & 0xF0) as u8; 
     }
     pub fn set_bc(&mut self, value: u16) {
         self.b = (value >> 8) as u8;
@@ -88,6 +67,28 @@ impl Registers {
     }
 }
 
+#[allow(unused)]
+struct Opcode {
+    pub code: u8,                   // Opcode byte
+    pub mnemonic: String,           // Mnemonic representation
+    pub bytes: u8,                  // Number of bytes the instruction occupies
+    pub cycles: u8,                 // Number of cycles the instruction takes
+    pub operands: Vec<Operand>,     // Operands for the instruction
+    pub flags: Flags,               // Flags affected by the instruction
+    pub is_immidiate: bool,         // Does the instruction use immediate values
 
+}
 
-struct Instruction(u8);
+#[allow(unused)]
+struct Operand {
+    name: String,                   // Operand name (e.g., "A", "B", "(HL)", "d8", "a16")  
+    bytes: Option<u8>,              // Number of bytes the operand occupies (if applicable)
+    is_immediate: bool,             // Is the operand an immediate value  
+}
+#[allow(unused)]
+struct Flags {
+    z: char,                        // Zero Flag
+    n: char,                        // Subtract Flag
+    h: char,                        // Half Carry Flag
+    c: char,                        // Carry Flag
+}
