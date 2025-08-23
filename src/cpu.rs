@@ -66,29 +66,3 @@ impl Registers {
         self.l = value as u8;
     }
 }
-
-#[allow(unused)]
-struct Opcode {
-    pub code: u8,                   // Opcode byte
-    pub mnemonic: String,           // Mnemonic representation
-    pub bytes: u8,                  // Number of bytes the instruction occupies
-    pub cycles: u8,                 // Number of cycles the instruction takes
-    pub operands: Vec<Operand>,     // Operands for the instruction
-    pub flags: Flags,               // Flags affected by the instruction
-    pub is_immidiate: bool,         // Does the instruction use immediate values
-
-}
-
-#[allow(unused)]
-struct Operand {
-    name: String,                   // Operand name (e.g., "A", "B", "(HL)", "d8", "a16")  
-    bytes: Option<u8>,              // Number of bytes the operand occupies (if applicable)
-    is_immediate: bool,             // Is the operand an immediate value  
-}
-#[allow(unused)]
-struct Flags {
-    z: char,                        // Zero Flag
-    n: char,                        // Subtract Flag
-    h: char,                        // Half Carry Flag
-    c: char,                        // Carry Flag
-}
