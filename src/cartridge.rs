@@ -12,7 +12,7 @@ pub struct ROMHeader {
     nintendo_logo: [u8; 48],
     title: [u8; 15],              // title (15 bytes, CGB interpretation)
     cgb_flag: u8,                 // 0x143
-    new_licensee_code: u16,   // 0x144–0x145
+    new_licensee_code: u16,       // 0x144–0x145
     sgb_flag: u8,                 // 0x146
     cartridge_type: u8,           // 0x147
     rom_size: u8,                 // 0x148
@@ -21,12 +21,16 @@ pub struct ROMHeader {
     old_licensee_code: u8,        // 0x14B
     mask_rom_version_number: u8,  // 0x14C
     header_checksum: u8,          // 0x14D
-    global_checksum: u16,     // 0x14E–0x14F
+    global_checksum: u16,         // 0x14E–0x14F
 }
 impl ROMHeader {
-    pub fn from_bytes(bytes: &[u8]) -> &Self {
-        assert!(bytes.len() >= std::mem::size_of::<ROMHeader>());
-        unsafe { &*(bytes.as_ptr() as *const ROMHeader) }
+pub fn from_bytes(bytes: &[u8]) -> Option<&Self> {
+        if bytes.len() < std::mem::size_of::<ROMHeader>() {
+            return None; // Not enough bytes
+        }
+
+        // SAFETY: We checked that bytes has enough length
+        Some(unsafe { &*(bytes.as_ptr() as *const ROMHeader) })
     }
     pub fn get_entry_point(&self) -> [u8; 4] {
         self.entry_point
@@ -130,16 +134,21 @@ pub struct Cartridge {
     rom_data: Vec<u8>,
 }
 impl Cartridge {
-    pub fn new(rom_data: Vec<u8>) -> Self {
+    pub fn new(rom_data: Vec<u8>) -> Option<Self> {
         let header_bytes = &rom_data[ROM_HEADER_START_ADDRESS..=ROM_HEADER_END_ADDRESS];
-        let header = ROMHeader::from_bytes(header_bytes);
+        let header = match ROMHeader::from_bytes(header_bytes) {
+            Some(h) => h,
+            None => return None, // Not enough data for header
+        };
 
-        Cartridge { header: *header, rom_data }
+        Some(Cartridge { header: *header, rom_data })
     }
-    pub fn new_from_file(file_path: &str) -> std::io::Result<Self> {
-        let rom_data = std::fs::read(file_path)?;
-        
-        Ok(Cartridge::new(rom_data))
+    pub fn new_from_file(file_path: &str) -> Option<Self> {
+        let rom_data = std::fs::read(file_path).ok()?; // Convert Result to Option
+        match Cartridge::new(rom_data) {
+            Some(cart) => Some(cart),
+            None => None,  
+        }
     }
     pub fn get_header(&self) -> &ROMHeader {
         &self.header
@@ -149,5 +158,20 @@ impl Cartridge {
     }
     pub fn print_info(&self) {
         println!("{}", self.header);
+    }
+}
+impl IO for Cartridge {
+    fn read(&self, addr: u16) -> Option<u8> {
+        let addr = addr as usize;
+        if addr < self.rom_data.len() {
+            Some(self.rom_data[addr])
+        } else {
+            None
+        }
+    }
+
+    fn write(&mut self, _addr: u16, _value: u8) -> bool {
+        // ROM is read-only; writes are ignored
+        false
     }
 }
