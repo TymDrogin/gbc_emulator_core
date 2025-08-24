@@ -1,5 +1,13 @@
 use std::collections::HashMap;
 
+pub trait IO {
+    fn read(&self, addr: u16) -> Option<u8>;           // returns Some(value) if handled
+    fn write(&mut self, addr: u16, value: u8) -> bool; // returns true if handled
+}
+
+
+
+
 
 pub fn get_cartridge_types() -> HashMap<u8, &'static str> {
     let mut map = HashMap::new();
@@ -35,7 +43,6 @@ pub fn get_cartridge_types() -> HashMap<u8, &'static str> {
 
     map
 }
-
 pub fn old_licensee_codes() -> HashMap<u8, &'static str> {
     let mut map = HashMap::new();
 
