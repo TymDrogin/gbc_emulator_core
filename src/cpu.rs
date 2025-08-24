@@ -1,4 +1,5 @@
 use crate::cartridge::*;
+use crate::opcode::*;
 use std::collections::HashMap;
 
 
@@ -8,6 +9,13 @@ struct CPU {
     reg: Registers
 }
 
+
+
+
+struct Instruction {
+    raw: u8,
+    opcode: Opcode,
+}
 
 
 
