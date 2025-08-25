@@ -104,7 +104,7 @@ impl MMU {
             // ROM Bank 0
             MMU_ROM_BANK_0_START..=MMU_ROM_BANK_0_END => {
                 let offset = addr as usize - MMU_ROM_BANK_0_START as usize;
-                Ok(self.rom_bank_0[offset])
+                Some(self.rom_bank_0[offset])
             }
 
             // Switchable ROM Bank N

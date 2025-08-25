@@ -1,7 +1,33 @@
 use std::collections::HashMap;
 use serde::Deserialize;
+use serde::de::{self, Deserializer};
 
 type OpcodeTable = HashMap<u8, Opcode>;
+
+
+fn de_hex_key<'de, D, T>(deserializer: D) -> Result<HashMap<u8, T>, D::Error>
+where
+    D: Deserializer<'de>,
+    T: serde::Deserialize<'de>,
+{
+    let raw: HashMap<String, T> = HashMap::deserialize(deserializer)?;
+    raw.into_iter()
+        .map(|(k, v)| {
+            let num = u8::from_str_radix(k.trim_start_matches("0x"), 16)
+                .map_err(de::Error::custom)?;
+            Ok((num, v))
+        })
+        .collect()
+}
+
+#[derive(Debug, Deserialize)]
+pub struct OpcodeTables {
+    #[serde(deserialize_with = "de_hex_key")]
+    pub unprefixed: OpcodeTable,
+
+    #[serde(deserialize_with = "de_hex_key")]
+    pub cbprefixed: OpcodeTable,
+}
 
 
 #[allow(unused)]

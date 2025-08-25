@@ -1,5 +1,8 @@
 use std::collections::HashMap;
 
+// This file contains common definitions and utilities used across the emulator
+
+
 pub trait IO {
     fn read(&self, addr: u16) -> Option<u8>;           // returns Some(value) if handled
     fn write(&mut self, addr: u16, value: u8) -> bool; // returns true if handled
